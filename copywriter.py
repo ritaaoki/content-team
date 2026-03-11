@@ -1,4 +1,5 @@
 import operator
+import re
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel
@@ -62,7 +63,8 @@ async def generate_linkedin_post(
     Returns:
         A string indicating the location of the saved post.
     """
-    filename=f"ai_files/{title}.md"
+    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
+    filename = f"ai_files/{safe_title}.md"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -82,7 +84,8 @@ async def generate_blog_post(
     Returns:
         A string indicating the location of the saved post.
     """
-    filename=f"ai_files/{title}.md"
+    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
+    filename = f"ai_files/{safe_title}.md"
     with open(filename, "w") as f:
         f.write(content)
 
