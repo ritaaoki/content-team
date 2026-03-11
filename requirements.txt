@@ -1,0 +1,20 @@
+# Core LangChain + LangGraph
+langchain-core
+langchain-google-genai
+langchain-tavily
+langgraph
+
+# Pydantic (data validation)
+pydantic
+
+# Environment variables
+python-dotenv
+
+# Terminal UI
+rich
+
+# Async support
+nest_asyncio
+
+# Notebook/visualization support
+ipython

@@ -1,0 +1,24 @@
+# Virtual environment
+venv/
+
+# Environment variables (never commit this - contains your API keys)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated AI content (keep folder, ignore contents)
+ai_files/*
+!ai_files/.gitkeep
+
+# VS Code settings
+.vscode/
+
+# Anaconda/Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
