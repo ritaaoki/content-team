@@ -10,9 +10,10 @@ The system is made up of 4 agents that work together, each with a specific role:
 | Agent | Purpose |
 |---|---|
 | 🎯 **Supervisor** | The brain of the operation. Understands your request, breaks it into tasks, delegates to the right agents, and checks the work before presenting it to you |
+| 💡 **Idea Generator** | Scans your existing posts in `ai_files/` and generates fresh content ideas that avoid repeating what you've already written |
 | 🔬 **Researcher** | Searches the web and compiles research reports on any topic. Called multiple times for comprehensive coverage |
 | ✍️ **Copywriter** | Reads the research reports and writes polished LinkedIn posts or blog posts in your style |
-| 💡 **Idea Generator** | Scans your existing posts in `ai_files/` and generates fresh content ideas that avoid repeating what you've already written |
+
 
 **Example flows:**
 
