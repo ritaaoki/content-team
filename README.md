@@ -152,15 +152,15 @@ deactivate
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```
-your-project/
+content-team/
 │
 ├── main.py                   # Entry point — run this
 ├── requirements.txt          # All dependencies
-├── .env                      # Your API keys (never share this)
-├── generated_content/                 # Generated content saved here
+├── .env                      # Your API keys 
+├── generated_content/        # Generated content saved here
 │   └── .gitkeep              # Keeps folder tracked in git
 │
 ├── prompts/
@@ -174,10 +174,11 @@ your-project/
 │   ├── linkedin_hot_take.md
 │   └── blog.md
 │
-├── supervisor.py             # Supervisor agent + graph
-├── researcher.py             # Researcher agent + graph
-├── copywriter.py             # Copywriter agent + graph
-└── idea_generator.py         # Idea generator agent + graph
+└── agents/
+    ├── supervisor.py         # Supervisor agent + graph
+    ├── researcher.py         # Researcher agent + graph
+    ├── copywriter.py         # Copywriter agent + graph
+    └── idea_generator.py     # Idea generator agent + graph
 ```
 
 ---
