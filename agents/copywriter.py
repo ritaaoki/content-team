@@ -64,7 +64,7 @@ async def generate_linkedin_post(
         A string indicating the location of the saved post.
     """
     safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
-    filename = f"ai_files/{safe_title}.md"
+    filename = f"generated_content/{safe_title}.md"
     with open(filename, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -85,8 +85,8 @@ async def generate_blog_post(
         A string indicating the location of the saved post.
     """
     safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
-    filename = f"ai_files/{safe_title}.md"
-    with open(filename, "w") as f:
+    filename = f"generated_content/{safe_title}.md"
+    with open(filename, "w", encoding="utf-8") as f:
         f.write(content)
 
     return f"The blog post has been generated and saved to {filename}"

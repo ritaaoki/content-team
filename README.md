@@ -10,7 +10,7 @@ The system is made up of 4 agents that work together, each with a specific role:
 | Agent | Purpose |
 |---|---|
 | 🎯 **Supervisor** | The brain of the operation. Understands your request, breaks it into tasks, delegates to the right agents, and checks the work before presenting it to you |
-| 💡 **Idea Generator** | Scans your existing posts in `ai_files/` and generates fresh content ideas that avoid repeating what you've already written |
+| 💡 **Idea Generator** | Scans your existing posts in `generated_content/` and generates fresh content ideas that avoid repeating what you've already written |
 | 🔬 **Researcher** | Searches the web and compiles research reports on any topic. Called multiple times for comprehensive coverage |
 | ✍️ **Copywriter** | Reads the research reports and writes polished LinkedIn posts or blog posts in your style |
 
@@ -18,7 +18,7 @@ The system is made up of 4 agents that work together, each with a specific role:
 **Example flows:**
 
 > *"Write a LinkedIn post about AI in healthcare"*
-> → Supervisor → Researcher (x2-3) → Copywriter → saved to `ai_files/`
+> → Supervisor → Researcher (x2-3) → Copywriter → saved to `generated_content/`
 
 > *"I don't know what to post about, give me ideas"*
 > → Supervisor → Idea Generator → presents ideas → you pick one → Researcher → Copywriter
@@ -119,25 +119,7 @@ LANGSMITH_API_KEY=your-langsmith-api-key-here
 
 ---
 
-## Step 6 — Create Required Folders
-
-The project saves generated files to an `ai_files` folder. Create it before running:
-
-### 🪟 Windows
-
-```bash
-mkdir ai_files
-```
-
-### 🍎 Mac / Linux
-
-```bash
-mkdir ai_files
-```
-
----
-
-## Step 7 — Run the Project
+## Step 9 — Run the Project
 
 ```bash
 python main.py
@@ -178,7 +160,7 @@ your-project/
 ├── main.py                   # Entry point — run this
 ├── requirements.txt          # All dependencies
 ├── .env                      # Your API keys (never share this)
-├── ai_files/                 # Generated content saved here
+├── generated_content/                 # Generated content saved here
 │   └── .gitkeep              # Keeps folder tracked in git
 │
 ├── prompts/

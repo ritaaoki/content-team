@@ -29,19 +29,19 @@ class IdeaGeneratorState(BaseModel):
 
 @tool
 async def review_existing_posts():
-    """Review all existing posts in the ai_files folder to analyze topics, tone, and style.
+    """Review all existing posts in the generated_content folder to analyze topics, tone, and style.
 
     Returns:
         A dictionary containing all existing posts and their contents.
     """
     posts = {}
-    for folder in [Path("example_content"), Path("ai_files")]:
+    for folder in [Path("example_content"), Path("generated_content")]:
         for file in folder.rglob("*.md"):
             posts[file.stem] = file.read_text(encoding="utf-8", errors="replace")
     
     
     if not posts:
-        return {"message": "No existing posts found in ai_files folder or example_content folder.", "posts": {}}
+        return {"message": "No existing posts found in generated_content folder or example_content folder.", "posts": {}}
 
     return {
         "message": f"Found {len(posts)} existing post(s).",
@@ -54,7 +54,7 @@ async def generate_ideas_report(
     title: str,
     ideas: str,
 ):
-    """Save the generated content ideas as a report in the ai_files folder.
+    """Save the generated content ideas as a report in the generated_content folder.
 
     Args:
         title: The title of the ideas report.
@@ -64,7 +64,7 @@ async def generate_ideas_report(
         A string indicating the location of the saved report.
     """
     safe_title = re.sub(r'[<>:"/\\|?*]', '', title).strip()
-    filename = f"ai_files/{safe_title}.md"
+    filename = f"generated_content/{safe_title}.md"
 
     with open(filename, "w", encoding="utf-8") as f:
         f.write(ideas)
