@@ -37,14 +37,11 @@ async def review_existing_posts():
     posts = {}
     for folder in [Path("example_content"), Path("ai_files")]:
         for file in folder.rglob("*.md"):
-            if file.name == ".gitkeep":
-                continue
             posts[file.stem] = file.read_text(encoding="utf-8", errors="replace")
     
-                                    
-
+    
     if not posts:
-        return {"message": "No existing posts found in ai_files folder.", "posts": {}}
+        return {"message": "No existing posts found in ai_files folder or example_content folder.", "posts": {}}
 
     return {
         "message": f"Found {len(posts)} existing post(s).",
