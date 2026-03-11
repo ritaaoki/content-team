@@ -111,6 +111,7 @@ Create a file called `.env` in the root of the project folder and add your API k
 ```
 GOOGLE_API_KEY=your-gemini-api-key-here
 TAVILY_API_KEY=your-tavily-api-key-here
+LANGSMITH_API_KEY=your-langsmith-api-key-here
 ```
 
 > 💡 Never share this file or commit it to GitHub. It contains your private keys.
