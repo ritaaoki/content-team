@@ -1,5 +1,5 @@
 # Multi-Agent AI Content Creator
-A LangGraph-powered multi-agent system that generates ideas, researches, and writes content for you.
+A LangGraph-powered multi-agent system that researches, generates ideas, and writes content for you.
 
 ---
 
@@ -10,10 +10,9 @@ The system is made up of 4 agents that work together, each with a specific role:
 | Agent | Purpose |
 |---|---|
 | 🎯 **Supervisor** | The brain of the operation. Understands your request, breaks it into tasks, delegates to the right agents, and checks the work before presenting it to you |
-| 💡 **Idea Generator** | Scans your existing posts in `example_content/` and generates fresh content ideas that avoid repeating what you've already written |
 | 🔬 **Researcher** | Searches the web and compiles research reports on any topic. Called multiple times for comprehensive coverage |
 | ✍️ **Copywriter** | Reads the research reports and writes polished LinkedIn posts or blog posts in your style |
-
+| 💡 **Idea Generator** | Scans your existing posts in `ai_files/` and generates fresh content ideas that avoid repeating what you've already written |
 
 **Example flows:**
 
@@ -35,14 +34,15 @@ Before you start, make sure you have the following installed:
 You'll also need API keys for:
 - **Google Gemini** → [Get one at Google AI Studio](https://aistudio.google.com)
 - **Tavily** (web search) → [Get one at tavily.com](https://tavily.com)
+- **LangSmith** (tracing & observability) → [Get one at smith.langchain.com](https://smith.langchain.com)
 
 ---
 
 ## Step 1 — Clone or Download the Project
 
 ```bash
-git clone <your-repo-url>
-cd <your-project-folder>
+git clone https://github.com/ritaaoki/content-team
+cd content-team
 ```
 
 ---
@@ -111,14 +111,31 @@ Create a file called `.env` in the root of the project folder and add your API k
 ```
 GOOGLE_API_KEY=your-gemini-api-key-here
 TAVILY_API_KEY=your-tavily-api-key-here
-LANGSMITH_API_KEY==your-langsmith-api-key-here
 ```
 
 > 💡 Never share this file or commit it to GitHub. It contains your private keys.
 
 ---
 
-## Step 6 — Run the Project
+## Step 6 — Create Required Folders
+
+The project saves generated files to an `ai_files` folder. Create it before running:
+
+### 🪟 Windows
+
+```bash
+mkdir ai_files
+```
+
+### 🍎 Mac / Linux
+
+```bash
+mkdir ai_files
+```
+
+---
+
+## Step 7 — Run the Project
 
 ```bash
 python main.py
@@ -154,7 +171,7 @@ deactivate
 ## Project Structure
 
 ```
-CONTENT_CREATOR/
+your-project/
 │
 ├── main.py                   # Entry point — run this
 ├── requirements.txt          # All dependencies
@@ -190,7 +207,5 @@ CONTENT_CREATOR/
 **`429 RESOURCE_EXHAUSTED`** — You've hit the Gemini free tier limit. Add billing at [aistudio.google.com](https://aistudio.google.com) or wait until the limit resets
 
 **PowerShell execution error on Windows** — See the note in Step 3 about setting execution policy
-
-**`ai_files` folder not found error** — Make sure you created the `ai_files` folder in Step 6
 
 **`UnicodeEncodeError`** — Make sure all file write calls in `copywriter.py` and `idea_generator.py` include `encoding="utf-8"`
