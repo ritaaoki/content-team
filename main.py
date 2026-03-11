@@ -32,6 +32,7 @@ async def stream_graph_responses(
     """
     # Agent styling configuration
     AGENT_STYLES = {
+        'idea_generator': {'color': 'yellow', 'emoji': '💡', 'name': 'Idea Generator'},
         'researcher': {'color': 'cyan', 'emoji': '🔬', 'name': 'Researcher'},
         'copywriter': {'color': 'magenta', 'emoji': '✍️', 'name': 'Copywriter'},
         'supervisor': {'color': 'green', 'emoji': '🎯', 'name': 'Supervisor'},
@@ -61,6 +62,8 @@ async def stream_graph_responses(
                     ai_source = "researcher"
                 elif "call_copywriter" in namespace_str:
                     ai_source = "copywriter"
+                elif "call_idea_generator" in namespace_str:
+                    ai_source = "idea_generator"
                 else:
                     # Fallback for unknown subgraphs
                     ai_source = "researcher"

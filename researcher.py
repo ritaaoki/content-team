@@ -61,7 +61,8 @@ async def extract_content_from_webpage(urls: List[str]):
         A list of dictionaries containing the extracted content from each webpage.
     """
     web_extract = TavilyExtract()
-    results = web_extract.invoke(input={"urls": urls})["results"]
+    response = web_extract.invoke(input={"urls": urls})
+    results = response["results"] if isinstance(response, dict) else response
     return results
 
 class ResearchReport(BaseModel):

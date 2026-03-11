@@ -1,6 +1,27 @@
-# Multi-Agent AI Research Assistant
+# Multi-Agent AI Content Creator
+A LangGraph-powered multi-agent system that generates ideas, researches, and writes content for you.
 
-A LangGraph-powered multi-agent system with a Supervisor, Researcher, and Copywriter agent.
+---
+
+## How It Works
+
+The system is made up of 4 agents that work together, each with a specific role:
+
+| Agent | Purpose |
+|---|---|
+| 🎯 **Supervisor** | The brain of the operation. Understands your request, breaks it into tasks, delegates to the right agents, and checks the work before presenting it to you |
+| 💡 **Idea Generator** | Scans your existing posts in `example_content/` and generates fresh content ideas that avoid repeating what you've already written |
+| 🔬 **Researcher** | Searches the web and compiles research reports on any topic. Called multiple times for comprehensive coverage |
+| ✍️ **Copywriter** | Reads the research reports and writes polished LinkedIn posts or blog posts in your style |
+
+
+**Example flows:**
+
+> *"Write a LinkedIn post about AI in healthcare"*
+> → Supervisor → Researcher (x2-3) → Copywriter → saved to `ai_files/`
+
+> *"I don't know what to post about, give me ideas"*
+> → Supervisor → Idea Generator → presents ideas → you pick one → Researcher → Copywriter
 
 ---
 
@@ -90,31 +111,14 @@ Create a file called `.env` in the root of the project folder and add your API k
 ```
 GOOGLE_API_KEY=your-gemini-api-key-here
 TAVILY_API_KEY=your-tavily-api-key-here
+LANGSMITH_API_KEY==your-langsmith-api-key-here
 ```
 
 > 💡 Never share this file or commit it to GitHub. It contains your private keys.
 
 ---
 
-## Step 6 — Create Required Folders
-
-The project saves generated files to an `ai_files` folder. Create it before running:
-
-### 🪟 Windows
-
-```bash
-mkdir ai_files
-```
-
-### 🍎 Mac / Linux
-
-```bash
-mkdir ai_files
-```
-
----
-
-## Step 7 — Run the Project
+## Step 6 — Run the Project
 
 ```bash
 python main.py
@@ -122,10 +126,15 @@ python main.py
 
 You'll see a welcome panel in the terminal. Type your request and hit Enter.
 
-**Example prompt to try:**
+**Example prompts to try:**
+
 ```
-Write a LinkedIn post on the top AI tools that small businesses need to scale. 
-Include real-world examples with numbers and a call to action at the end.
+Write a LinkedIn post on why two similar products can have completely different outcomes.
+Use non-obvious examples and conclude with how GenAI has made feature parity table stakes.
+```
+
+```
+I'm not sure what to post about next. Can you look at my existing posts and give me some fresh ideas?
 ```
 
 Type `exit` or `quit` to stop the program.
@@ -145,25 +154,29 @@ deactivate
 ## Project Structure
 
 ```
-your-project/
+CONTENT_CREATOR/
 │
-├── main.py                  # Entry point — run this
-├── requirements.txt         # All dependencies
-├── .env                     # Your API keys (never share this)
-├── ai_files/                # Generated content saved here
+├── main.py                   # Entry point — run this
+├── requirements.txt          # All dependencies
+├── .env                      # Your API keys (never share this)
+├── ai_files/                 # Generated content saved here
+│   └── .gitkeep              # Keeps folder tracked in git
 │
 ├── prompts/
-│   ├── supervisor.md        # Supervisor agent instructions
-│   ├── researcher.md        # Researcher agent instructions
-│   └── copywriter.md        # Copywriter agent instructions
+│   ├── supervisor.md         # Supervisor agent instructions
+│   ├── researcher.md         # Researcher agent instructions
+│   ├── copywriter.md         # Copywriter agent instructions
+│   └── idea_generator.md     # Idea generator agent instructions
 │
-├── example_content/
-│   ├── linkedin.md          # Example LinkedIn post style
-│   └── blog.md              # Example blog post style
+├── example_content/          # Style examples for the copywriter
+│   ├── linkedin.md
+│   ├── linkedin_hot_take.md
+│   └── blog.md
 │
-└── supervisor.py
-└──  researcher.py
-└── copywriter.py
+├── supervisor.py             # Supervisor agent + graph
+├── researcher.py             # Researcher agent + graph
+├── copywriter.py             # Copywriter agent + graph
+└── idea_generator.py         # Idea generator agent + graph
 ```
 
 ---
@@ -174,6 +187,10 @@ your-project/
 
 **`API key not found`** — Make sure your `.env` file exists in the root folder and has the correct key names
 
+**`429 RESOURCE_EXHAUSTED`** — You've hit the Gemini free tier limit. Add billing at [aistudio.google.com](https://aistudio.google.com) or wait until the limit resets
+
 **PowerShell execution error on Windows** — See the note in Step 3 about setting execution policy
 
 **`ai_files` folder not found error** — Make sure you created the `ai_files` folder in Step 6
+
+**`UnicodeEncodeError`** — Make sure all file write calls in `copywriter.py` and `idea_generator.py` include `encoding="utf-8"`
