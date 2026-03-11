@@ -119,7 +119,7 @@ LANGSMITH_API_KEY=your-langsmith-api-key-here
 
 ---
 
-## Step 9 — Run the Project
+## Step 6 — Run the Project
 
 ```bash
 python main.py
