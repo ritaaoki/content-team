@@ -9,9 +9,9 @@ from langgraph.prebuilt import ToolNode
 from langchain_core.tools import tool, InjectedToolCallId
 from langgraph.checkpoint.memory import MemorySaver
 from datetime import datetime
-from researcher import graph as research_agent
-from copywriter import graph as copywriter_agent
-from idea_generator import graph as idea_generator_agent
+from agents.researcher import graph as research_agent
+from agents.copywriter import graph as copywriter_agent
+from agents.idea_generator import graph as idea_generator_agent
 from langgraph.types import Command, RunnableConfig
 
 load_dotenv()
