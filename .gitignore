@@ -12,6 +12,8 @@ __pycache__/
 # Generated AI content (keep folder, ignore contents)
 generated_content/*
 !generated_content/.gitkeep
+backend/generated_content/*
+!backend/generated_content/.gitkeep
 
 # VS Code settings
 .vscode/
