@@ -169,10 +169,10 @@ async def main():
     console = Console()
 
     try:
-        config = RunnableConfig(configurable={
-            "thread_id": "1",
-            "recursion_limit": 50,
-        })
+        config = RunnableConfig(
+            configurable={"thread_id": "1"},
+            recursion_limit=50,
+        )
 
         # Welcome panel with responsive width
         welcome_panel = Panel(

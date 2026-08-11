@@ -11,11 +11,14 @@ from langgraph.checkpoint.memory import MemorySaver
 from langchain_tavily import TavilySearch, TavilyExtract
 from datetime import datetime
 from langgraph.types import Command
+from pathlib import Path
 
 load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 # Load the researcher system prompt
-researcher_prompt = open("prompts/researcher.md", "r").read()
+researcher_prompt = (BASE_DIR / "prompts" / "researcher.md").read_text(encoding="utf-8")
 
 @tool
 async def search_web(
@@ -32,7 +35,7 @@ async def search_web(
         A dictionary of the search results.
     """
     web_search = TavilySearch(max_results=min(num_results, 3), topic="general")
-    search_results = web_search.invoke(input={"query": query})
+    search_results = await web_search.ainvoke(input={"query": query})
     
     processed_results = {
         "query": query,
@@ -61,7 +64,7 @@ async def extract_content_from_webpage(urls: List[str]):
         A list of dictionaries containing the extracted content from each webpage.
     """
     web_extract = TavilyExtract()
-    response = web_extract.invoke(input={"urls": urls})
+    response = await web_extract.ainvoke(input={"urls": urls})
     results = response["results"] if isinstance(response, dict) else response
     return results
 
@@ -125,7 +128,7 @@ llm_with_tools = llm.bind_tools(tools)
 
 async def researcher(state: ResearcherState):
     """The main researcher agent."""
-    response = llm_with_tools.invoke([
+    response = await llm_with_tools.ainvoke([
         SystemMessage(content=researcher_prompt.format(current_datetime=datetime.now()))
         ] + state.messages)
     return {"messages": [response]}

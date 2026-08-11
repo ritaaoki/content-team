@@ -13,11 +13,14 @@ from agents.researcher import graph as research_agent
 from agents.copywriter import graph as copywriter_agent
 from agents.idea_generator import graph as idea_generator_agent
 from langgraph.types import Command, RunnableConfig
+from pathlib import Path
 
 load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 # Load the supervisor system prompt
-supervisor_prompt = open("prompts/supervisor.md", "r", encoding="utf-8").read()
+supervisor_prompt = (BASE_DIR / "prompts" / "supervisor.md").read_text(encoding="utf-8")
 
 
 class SupervisorState(BaseModel):
@@ -103,7 +106,7 @@ llm_with_tools = llm.bind_tools(tools)
 
 async def supervisor(state: SupervisorState):
     """The main supervisor agent."""
-    response = llm_with_tools.invoke([
+    response = await llm_with_tools.ainvoke([
         SystemMessage(content=supervisor_prompt.format(current_datetime=datetime.now()))
         ] + state.messages)
     return {"messages": [response]}

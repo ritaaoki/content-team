@@ -14,13 +14,16 @@ from pathlib import Path
 
 load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+EXAMPLE_CONTENT_DIR = BASE_DIR / "example_content"
+GENERATED_CONTENT_DIR = BASE_DIR / "generated_content"
 
 # Load the copywriter system prompt
-copywriter_prompt = open("prompts/copywriter.md", "r", encoding="utf-8").read()
+copywriter_prompt = (BASE_DIR / "prompts" / "copywriter.md").read_text(encoding="utf-8")
 
 # Load content examples
 example_content = {}
-for file in Path("example_content").rglob("*.md"):
+for file in EXAMPLE_CONTENT_DIR.rglob("*.md"):
     example_content[file.stem] = file.read_text(encoding="utf-8")
 
 all_examples = "\n\n---\n\n".join(
@@ -63,10 +66,10 @@ async def generate_linkedin_post(
     Returns:
         A string indicating the location of the saved post.
     """
-    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
-    filename = f"generated_content/{safe_title}.md"
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(content)
+    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip() or "untitled-linkedin-post"
+    GENERATED_CONTENT_DIR.mkdir(parents=True, exist_ok=True)
+    filename = GENERATED_CONTENT_DIR / f"{safe_title}.md"
+    filename.write_text(content, encoding="utf-8")
 
     return f"The LinkedIn post has been generated and saved to {filename}"
 
@@ -84,10 +87,10 @@ async def generate_blog_post(
     Returns:
         A string indicating the location of the saved post.
     """
-    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip()
-    filename = f"generated_content/{safe_title}.md"
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(content)
+    safe_title = re.sub(r'[<>:"/\\|?*\']', '', title).strip() or "untitled-blog-post"
+    GENERATED_CONTENT_DIR.mkdir(parents=True, exist_ok=True)
+    filename = GENERATED_CONTENT_DIR / f"{safe_title}.md"
+    filename.write_text(content, encoding="utf-8")
 
     return f"The blog post has been generated and saved to {filename}"
 
@@ -112,7 +115,7 @@ async def copywriter(state: CopyWriterState):
     current_datetime=datetime.now(),
     examples=all_examples,
     ))
-    response = llm_with_tools.invoke([system_prompt] + state.messages)
+    response = await llm_with_tools.ainvoke([system_prompt] + state.messages)
     return {"messages": [response]}
 
 async def copywriter_router(state: CopyWriterState) -> str:

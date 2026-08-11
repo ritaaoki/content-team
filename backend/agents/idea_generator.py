@@ -14,8 +14,12 @@ from pathlib import Path
 
 load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+EXAMPLE_CONTENT_DIR = BASE_DIR / "example_content"
+GENERATED_CONTENT_DIR = BASE_DIR / "generated_content"
+
 # Load the idea generator system prompt
-idea_generator_prompt = open("prompts/idea_generator.md", "r", encoding="utf-8").read()
+idea_generator_prompt = (BASE_DIR / "prompts" / "idea_generator.md").read_text(encoding="utf-8")
 
 
 class IdeaGeneratorState(BaseModel):
@@ -35,7 +39,7 @@ async def review_existing_posts():
         A dictionary containing all existing posts and their contents.
     """
     posts = {}
-    for folder in [Path("example_content"), Path("generated_content")]:
+    for folder in [EXAMPLE_CONTENT_DIR, GENERATED_CONTENT_DIR]:
         for file in folder.rglob("*.md"):
             posts[file.stem] = file.read_text(encoding="utf-8", errors="replace")
     
@@ -63,11 +67,11 @@ async def generate_ideas_report(
     Returns:
         A string indicating the location of the saved report.
     """
-    safe_title = re.sub(r'[<>:"/\\|?*]', '', title).strip()
-    filename = f"generated_content/{safe_title}.md"
+    safe_title = re.sub(r'[<>:"/\\|?*]', '', title).strip() or "untitled-ideas-report"
+    GENERATED_CONTENT_DIR.mkdir(parents=True, exist_ok=True)
+    filename = GENERATED_CONTENT_DIR / f"{safe_title}.md"
 
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(ideas)
+    filename.write_text(ideas, encoding="utf-8")
 
     return f"The ideas report has been saved to {filename}"
 
@@ -89,7 +93,7 @@ async def idea_generator(state: IdeaGeneratorState):
     system_prompt = SystemMessage(content=idea_generator_prompt.format(
         current_datetime=datetime.now(),
     ))
-    response = llm_with_tools.invoke([system_prompt] + state.messages)
+    response = await llm_with_tools.ainvoke([system_prompt] + state.messages)
     return {"messages": [response]}
 
 
